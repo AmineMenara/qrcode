@@ -9,11 +9,10 @@
 
 class Connection
 {
-    private $odbc = "SQLServer";
-    // private $server = "DESKTOP-KKF4E3F";
-    private $user = "";
-    private $pass = "";
-    private $database = "MENARA.dbo";
+    private $odbc = "ODBC";
+    private $user = "USER";
+    private $pass = "PASSWORD";
+    private $database = "DATABASE";
 
     private $connect;
     private $statement;
@@ -23,7 +22,6 @@ class Connection
     {
         // Create odbc instance
         try {
-            // $this->connect = odbc_connect("Driver={SQL Server};Server=$this->server;Database=$this->database;  CharacterSet => UTF-8", $this->user, $this->pass);
             $this->connect = odbc_connect($this->odbc, $this->user, $this->pass);
         } catch (PDOException $e) {
             die(print_r(odbc_error(), true));
@@ -40,9 +38,6 @@ class Connection
     public function query($sql)
     {
         $this->statement = $sql;
-        // print_r('<pre>');
-        // var_dump($this->statement);
-        // print_r('</pre>');
     }
 
     // Get result set as array of objects
@@ -66,6 +61,17 @@ class Connection
 
         while ($rows = odbc_fetch_object($this->result)) {
             return $rows;
+        }
+    }
+
+    public function manipulation()
+    {
+        $this->result = odbc_exec($this->connect, $this->statement);
+
+        if (!$this->result) {
+            return 'error';
+        } else {
+            return 'success';
         }
     }
 

@@ -1,78 +1,39 @@
+<?php session_start(); ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Control</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <?php if (isset($_SESSION['error'])) : ?>
+        <div class="alert alert-danger" role="alert">
+            <?php echo $_SESSION['error'] ?>
+        </div>
+    <?php elseif (isset($_SESSION['success'])) : ?>
+        <div class="alert alert-success" role="alert">
+            <?php echo $_SESSION['success'] ?>
+        </div>
+    <?php endif; ?>
+
+
+    <a href="scan.php" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Scan</a>
+</body>
+
+</html>
+
 <?php
-
-class Connection
-{
-    private $odbc = "SQLServer";
-    // private $server = "DESKTOP-KKF4E3F";
-    private $user = "";
-    private $pass = "";
-    private $database = "MENARA.dbo";
-
-    private $connect;
-    private $statement;
-    private $result;
-
-    public function __construct()
-    {
-        // Create odbc instance
-        try {
-            // $this->connect = odbc_connect("Driver={SQL Server};Server=$this->server;Database=$this->database;  CharacterSet => UTF-8", $this->user, $this->pass);
-            $this->connect = odbc_connect($this->odbc, $this->user, $this->pass);
-        } catch (PDOException $e) {
-            die(print_r(odbc_error(), true));
-        }
-    }
-
-    // Read database property
-    public function database()
-    {
-        return $this->database;
-    }
-
-    // Set the statement
-    public function query($sql)
-    {
-        $this->statement = $sql;
-        // print_r('<pre>');
-        // var_dump($this->statement);
-        // print_r('</pre>');
-    }
-
-    // Get result set as array of objects
-    public function resultSet()
-    {
-        $data = [];
-
-        $this->result = odbc_exec($this->connect, $this->statement);
-
-        while ($rows = odbc_fetch_object($this->result)) {
-            array_push($data, $rows);
-        }
-
-        return $data;
-    }
-
-    // Get single record as object
-    public function single()
-    {
-        $this->result = odbc_exec($this->connect, $this->statement);
-
-        while ($rows = odbc_fetch_object($this->result)) {
-            return $rows;
-        }
-    }
-
-    // Get count of statement
-    public function rowCount()
-    {
-        $this->result = odbc_exec($this->connect, $this->statement);
-
-        return odbc_num_rows($this->result);
-    }
-
-    // Close Connection
-    public function close()
-    {
-        odbc_close($this->connect);
-    }
+if (isset($_SESSION['error'])) {
+    unset($_SESSION['error']);
 }
+if (isset($_SESSION['success'])) {
+    unset($_SESSION['success']);
+}
+?>
